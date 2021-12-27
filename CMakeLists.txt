@@ -4,6 +4,7 @@ project(subprojects)
 
 
 set(WITH_DEBUG TRUE)
+# set(WITH_DEBUG FALSE)
 # option(DEBUG "Option debug" OFF)
 SET(_CMAKE_VERBOSE 0)
 

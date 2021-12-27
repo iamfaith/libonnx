@@ -37,7 +37,13 @@ macro(_add_layer name)
     set(op_definition "${op_definition}    .op_${name}							= resolver_default_op_${name},\n")
 
     set(op_table "${op_table}	void (*op_${name})(struct onnx_node_t * n);\n")
+
+    set(onnx_op_member "${onnx_op_member}   uint32_t ${name};\n")
+    set(onnx_op_define "${onnx_op_define}   __op.${name} = shash(\"${name}\"); \n ")
+
+    set(onnx_find_op "${onnx_find_op}       if (__op.${name} == tmp) { rop = r->op_${name}; } \n")
 endmacro(_add_layer class)
+
 
 
 _add_layer(Abs)
@@ -205,11 +211,13 @@ _add_layer(Range)
 _add_layer(Softmax)
 _add_layer(SoftmaxCrossEntropyLoss)
 
+# set(onnx_op_define "${onnx_op_define}  } ")
 
 configure_file(default/op_declaration.h.in ${CMAKE_CURRENT_BINARY_DIR}/op_declaration.h)
 configure_file(default/default.c.in ${CMAKE_CURRENT_BINARY_DIR}/default.c)
+configure_file(onnx.c.in ${CMAKE_CURRENT_BINARY_DIR}/onnx.c)
 
-file(GLOB helloworld_SRC CONFIGURE_DEPENDS "*.c" "default/*.c" "${CMAKE_CURRENT_BINARY_DIR}/default.c") 
+file(GLOB helloworld_SRC CONFIGURE_DEPENDS "*.c" "default/*.c" "${CMAKE_CURRENT_BINARY_DIR}/default.c" "${CMAKE_CURRENT_BINARY_DIR}/onnx.c") 
 add_library(${PROJECT_NAME} STATIC ${helloworld_SRC})
 
 # message(STATUS "helloworld_SRC ${helloworld_SRC}")
