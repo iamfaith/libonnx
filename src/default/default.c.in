@@ -1,0 +1,16 @@
+#include <default/default.h>
+
+void * resolver_default_create(void)
+{
+	return NULL;
+}
+
+void resolver_default_destroy(void * rctx)
+{
+}
+
+struct onnx_resolver_t resolver_default = {
+
+@op_definition@
+
+};

@@ -1,0 +1,13 @@
+struct onnx_resolver_t {
+	const char * name;
+
+	void * (*create)(void);
+	void (*destroy)(void * rctx);
+
+@op_table@
+};
+
+
+
+
+@op_declaration@

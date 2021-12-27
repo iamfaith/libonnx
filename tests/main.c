@@ -8,6 +8,16 @@
 #include <libgen.h>
 #include <sys/stat.h>
 #include <onnx.h>
+#include <sys/time.h>
+
+
+static inline uint64_t time_get(void)
+{
+	struct timeval tv;
+
+	gettimeofday(&tv, 0);
+	return (uint64_t)(tv.tv_sec * 1000000000ULL + tv.tv_usec * 1000);
+}
 
 static void testcase(const char * path, struct onnx_resolver_t ** r, int rlen)
 {
@@ -48,7 +58,10 @@ static void testcase(const char * path, struct onnx_resolver_t ** r, int rlen)
 				okay++;
 				ninput++;
 			}
+			uint64_t begin = time_get();
 			onnx_run(ctx);
+			uint64_t end = time_get();
+			printf("Lasting: %12.3fms", (double)(end - begin) / 1000.0f / 1000.0f);
 			while(1)
 			{
 				sprintf(tmp, "%s/output_%d.pb", data_set_path, noutput);
