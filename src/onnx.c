@@ -28,7 +28,34 @@
 #include <onnx.h>
 #include <default/default.h>
 
+#ifdef WITH_DEBUG
+#include <time.h>
+static inline char *get_curr_time()
+{
+    static char nowtime[20] = { 0 };
+    time_t curr_time;
+    time(&curr_time);
+    strftime(nowtime, 20, "%Y-%m-%d %H:%M:%S", localtime(&curr_time));
+    return nowtime;
+}
+
+// logging colors
+#define FMT_COLOR_RED       "\e[0;31m"
+#define FMT_COLOR_YELLOW    "\e[0;33m"
+#define FMT_COLOR_CYAN      "\e[0;36m"
+#define FMT_COLOR_END       "\e[0m"
+
+// logging prefix
+#define LOG_PREFIX_ERR      FMT_COLOR_RED "[ERROR]" FMT_COLOR_END
+#define LOG_PREFIX_INFO     "[INFO]"
+#define LOG_PREFIX_DBG      "[DEBUG]"
+#define LOG_PREFIX_TRACE    "[TRACE]"
+
+
+#define ONNX_LOG(...)	printf("\n\033[42;37m %s:%s %20s(%5d)\033[0m:", LOG_PREFIX_DBG, get_curr_time(), __FUNCTION__, __LINE__) && printf(__VA_ARGS__)
+#else
 #define ONNX_LOG(...)	printf(__VA_ARGS__)
+#endif
 
 static void hmap_entry_callback(struct hmap_entry_t * e)
 {

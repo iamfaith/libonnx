@@ -3,7 +3,15 @@ project (sublibrary1)
 
 cmake_minimum_required(VERSION 3.10)
 # Add a library with the above sources
-message(STATUS "CMAKE_CURRENT_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}")
+
+
+if(WITH_DEBUG)
+  add_definitions(-DWITH_DEBUG)
+endif()
+
+message(STATUS "CMAKE_CURRENT_SOURCE_DIR = ${CMAKE_CURRENT_SOURCE_DIR}")
+message(STATUS "WITH_DEBUG = ${WITH_DEBUG}")
+
 # message(STATUS "CMAKE_CURRENT_BINARY_DIR ${CMAKE_CURRENT_BINARY_DIR}")
 # include_directories(${CMAKE_CURRENT_SOURCE_DIR}/)
 
@@ -21,9 +29,9 @@ macro(_add_layer name)
     endif()
 
 
-    # if(_CMAKE_VERBOSE)
+    if(_CMAKE_VERBOSE)
         message(STATUS "WITH_LAYER_${name} = ${WITH_LAYER_${name}}")
-    # endif()
+    endif()
 
     set(op_declaration "${op_declaration}void resolver_default_op_${name}(struct onnx_node_t * n);\n")
     set(op_definition "${op_definition}    .op_${name}							= resolver_default_op_${name},\n")
