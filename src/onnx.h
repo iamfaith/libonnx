@@ -13,6 +13,13 @@ extern "C" {
 #define LIBONNX_PATCH			(0)
 #define LIBONNX_VERSION			((LIBONNX_MAJOY * 10000) + (LIBONNX_MINIOR * 100) + LIBONNX_PATCH)
 
+#ifdef WITH_DEBUG
+
+#include "benchmark.h"
+
+#endif
+
+
 struct onnx_tensor_t;
 struct onnx_node_t;
 struct onnx_graph_t;
